@@ -2,7 +2,6 @@ package com.you.springsecuritydemo.config;
 
 import com.google.common.collect.Lists;
 import com.you.springsecuritydemo.domain.constants.Constant;
-import javafx.util.Builder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
