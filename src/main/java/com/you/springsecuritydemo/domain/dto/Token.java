@@ -8,4 +8,5 @@ package com.you.springsecuritydemo.domain.dto;
  **/
 
 public class Token {
+
 }
