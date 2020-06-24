@@ -1,7 +1,9 @@
 package com.you.springsecuritydemo.config;
 
+
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 /**
@@ -30,4 +32,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 .allowedMethods("GET","POST","DELETE","PUT")
                 .maxAge(3600*24);
     }
+
+    /**
+     * @Description 添加 自定义的请求拦截器
+     * @Param [registry]
+     * @return void
+     **/
+/*    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(new AccessInterceptor()).addPathPatterns("/**");
+    }*/
 }

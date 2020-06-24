@@ -1,11 +1,15 @@
 package com.you.springsecuritydemo.config;
 
+import com.you.springsecuritydemo.domain.dto.LoginUserDto;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -22,8 +26,13 @@ import java.io.IOException;
  * @author: D
  * @create: 2020-06-23 16:38
  **/
-
+@Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,13 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         //基于token  不需要session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.authorizeRequests().antMatchers("*/*.html","/favicon.ico", "/css/**", "/js/**", "/fonts/**", "/layui/**", "/img/**",
-                "/swagger-resources/**").permitAll()
+                "/swagger-resources/**","/v2/api-docs/**","/swagger/**").permitAll()
                 .anyRequest().authenticated();
         http.formLogin().loginProcessingUrl("/login")
                 .successHandler(new AuthenticationSuccessHandler() {
                     @Override
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                        Object principal = authentication.getPrincipal();
+                        LoginUserDto loginUser = (LoginUserDto) authentication.getPrincipal();
                         //todo
                     }
                 })
