@@ -189,6 +189,6 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectByUsername" resultMap="BaseResultMap">
-        select  id , `password` from sys_user where username = #{username,jdbcType=VARCHAR}
+        select  id ,username, `password` from sys_user where username = #{username,jdbcType=VARCHAR}
     </select>
 </mapper>

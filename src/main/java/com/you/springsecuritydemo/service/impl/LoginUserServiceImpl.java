@@ -1,6 +1,6 @@
 package com.you.springsecuritydemo.service.impl;
 
-import com.you.springsecuritydemo.domain.dto.LoginUserDto;
+import com.you.springsecuritydemo.domain.entity.LoginUser;
 import com.you.springsecuritydemo.domain.pojo.Permission;
 import com.you.springsecuritydemo.domain.pojo.User;
 import com.you.springsecuritydemo.mapper.PermissionMapper;
@@ -29,12 +29,14 @@ public class LoginUserServiceImpl {
     @Resource
     private PermissionMapper permissionMapper;
 
-    public LoginUserDto getLoginUserInfo(String username){
-        LoginUserDto loginUserDto = new LoginUserDto();
+    public LoginUser getLoginUserInfo(String username){
+        LoginUser loginUserDto = new LoginUser();
         ArrayList<String> permissionList = new ArrayList<>();
         User dbUser = userMapper.selectByUsername(username);
+        log.info("dbUser:"+dbUser);
         if (dbUser == null){
             //todo   抛一个用户不存在的异常
+            log.info("用户不存在的异常");
         }else {
             BeanUtils.copyProperties(dbUser,loginUserDto);
             log.info("loginUserDto:" + loginUserDto);

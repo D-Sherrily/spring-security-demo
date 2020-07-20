@@ -1,7 +1,6 @@
 package com.you.springsecuritydemo.service.impl;
 
-import com.you.springsecuritydemo.domain.dto.LoginUserDto;
-import com.you.springsecuritydemo.service.LoginUserService;
+import com.you.springsecuritydemo.domain.entity.LoginUser;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,7 +24,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        LoginUserDto loginUserInfo = loginUserServiceimpl.getLoginUserInfo(s);
+        LoginUser loginUserInfo = loginUserServiceimpl.getLoginUserInfo(s);
         UserDetails userDetails = User
                 .withUsername(loginUserInfo.getUsername())
                 .password(loginUserInfo.getPassword())
