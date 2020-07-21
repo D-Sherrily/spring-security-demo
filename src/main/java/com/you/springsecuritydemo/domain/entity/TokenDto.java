@@ -15,15 +15,13 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Token implements Serializable {
+public class TokenDto implements Serializable {
     private static final long serialVersionUID = -7250145921118144028L;
 
     private String token;
 
     /**登录时间 （毫秒）*/
     private Long loginTime;
-
-
 
 
 }

@@ -2,7 +2,8 @@ package com.you.springsecuritydemo.config;
 
 import com.you.springsecuritydemo.domain.entity.LoginUser;
 import com.you.springsecuritydemo.domain.entity.Resp;
-import com.you.springsecuritydemo.domain.entity.Token;
+import com.you.springsecuritydemo.domain.entity.TokenDto;
+import com.you.springsecuritydemo.service.TokenService;
 import com.you.springsecuritydemo.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -16,6 +17,7 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+import javax.annotation.Resource;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,6 +32,8 @@ import java.io.IOException;
 @Slf4j
 @Configuration
 public class SecurityHandleConfig {
+    @Resource
+    private TokenService tokenService;
 
     /**
      * @Description 登录成功，返回token
@@ -40,11 +44,11 @@ public class SecurityHandleConfig {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                 //LoginUser loginUser = (LoginUser)authentication.getPrincipal();
-                Object principal = authentication.getPrincipal();
-                log.info("principal:"+principal);
-                log.info("principal:"+principal.toString());
-                //todo 获取token
-                Token token = null;
+                //Object principal = authentication.getPrincipal();
+                //log.info("principal:"+principal);
+                //info("principal:"+principal.toString());
+                //tokenService.saveToken()
+
                 ResponseUtil.responseJson(httpServletResponse, HttpStatus.OK.value(),"token");
             }
         };

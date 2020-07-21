@@ -52,7 +52,7 @@ public class SwaggerConfig {
 
     private ParameterBuilder parameterBuilder(){
         return new ParameterBuilder().parameterType("header")
-                .name(Constant.JWT_TOKEN_KEY)
+                .name("D")
                 .description("header参数")
                 .required(false)
                 .modelRef(new ModelRef("String"));

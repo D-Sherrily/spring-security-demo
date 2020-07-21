@@ -18,7 +18,7 @@ mybatis:
 token:
   expire:
     seconds:  7200
-  jwtSecret: dd
+    jwtSecret: dd
 server:
   port: 9999
 

@@ -18,10 +18,11 @@ public class Constant {
 
 
 
-    public static final String JWT_TOKEN_KEY = "token";
-    public static final Integer JWT_TOKEN_EXPIRE_SECONDS = 7200;
-    public static final String JWT_TOKEN_SECRET = "dd";
+   // public static final String JWT_TOKEN_KEY = "token";
+    //public static final Integer JWT_TOKEN_EXPIRE_SECONDS = 7200;
+    //public static final String JWT_TOKEN_SECRET = "dd";
 
     public static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
+
 
 }
