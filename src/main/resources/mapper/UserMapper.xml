@@ -189,6 +189,15 @@
         where id = #{id,jdbcType=INTEGER}
     </update>
     <select id="selectByUsername" resultMap="BaseResultMap">
-        select  id ,username, `password` from sys_user where username = #{username,jdbcType=VARCHAR}
+        select  id ,username, `password`,status from sys_user where username = #{username,jdbcType=VARCHAR}
     </select>
+
+
+    <update id="updatePasswordByUsername">
+        update sys_user
+        set
+        `password` = #{password,jdbcType=VARCHAR},
+        updateTime = CURRENT_TIME
+        where username = #{username}
+    </update>
 </mapper>

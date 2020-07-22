@@ -33,11 +33,11 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2)
                 .groupName("swagger 接口文档")
                 .apiInfo(apiInfo())
-                .globalOperationParameters(Lists.newArrayList(parameterBuilder().build()))
+
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.you.springsecuritydemo.controller"))
                 .paths(PathSelectors.any())
-                .build();
+                .build().globalOperationParameters(Lists.newArrayList(parameterBuilder().build()));
     }
 
 
@@ -51,9 +51,10 @@ public class SwaggerConfig {
     }
 
     private ParameterBuilder parameterBuilder(){
-        return new ParameterBuilder().parameterType("header")
-                .name("D")
-                .description("header参数")
+        return new ParameterBuilder()
+                .parameterType("header")
+                .name("token")
+                .description("token")
                 .required(false)
                 .modelRef(new ModelRef("String"));
     }

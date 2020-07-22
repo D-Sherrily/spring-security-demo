@@ -4,6 +4,7 @@ import com.you.springsecuritydemo.domain.entity.LoginUser;
 import com.you.springsecuritydemo.domain.entity.Resp;
 import com.you.springsecuritydemo.domain.entity.TokenDto;
 import com.you.springsecuritydemo.service.TokenService;
+import com.you.springsecuritydemo.utils.JwtTokenUtil;
 import com.you.springsecuritydemo.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -43,13 +44,10 @@ public class SecurityHandleConfig {
         return new AuthenticationSuccessHandler() {
             @Override
             public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
-                //LoginUser loginUser = (LoginUser)authentication.getPrincipal();
-                //Object principal = authentication.getPrincipal();
-                //log.info("principal:"+principal);
-                //info("principal:"+principal.toString());
-                //tokenService.saveToken()
-
-                ResponseUtil.responseJson(httpServletResponse, HttpStatus.OK.value(),"token");
+                LoginUser loginUser = (LoginUser)authentication.getPrincipal();
+                log.info("loginUser:"+loginUser);
+                TokenDto tokenDto = tokenService.saveToken(loginUser);
+                ResponseUtil.responseJson(httpServletResponse, HttpStatus.OK.value(),tokenDto);
             }
         };
     }

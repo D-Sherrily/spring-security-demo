@@ -5,7 +5,6 @@ import com.you.springsecuritydemo.domain.entity.LoginUser;
 import com.you.springsecuritydemo.domain.entity.TokenDto;
 import com.you.springsecuritydemo.service.TokenService;
 import io.jsonwebtoken.*;
-import io.swagger.models.auth.In;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -17,6 +16,7 @@ import javax.annotation.Resource;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -41,14 +41,16 @@ public class TokenServiceJWTImpl implements TokenService {
 
 
     @Resource
-    private RedisTemplate<String,LoginUser> redisTemplate;
+    private RedisTemplate<String, LoginUser> redisTemplate;
 
     public static  Key KEY = null;
-
+    private static final String ISS = "dd";
 
     //保存jwttoken
     @Override
     public TokenDto saveToken(LoginUser loginUser) {
+        log.info("expireSeconds:"+expireSeconds);
+        log.info("jwtSecret:"+jwtSecret);
         loginUser.setToken(UUID.randomUUID().toString());
         //缓存用户信息
         cacheLoginUser(loginUser);
@@ -111,36 +113,51 @@ public class TokenServiceJWTImpl implements TokenService {
     //生成 jwtkoken
     private String createJWTToken(LoginUser loginUser){
         HashMap<String, Object> claims = new HashMap<>();
+        log.info("createJWTToken  token："+loginUser.getToken());
         claims.put(Constant.LOGIN_USER_KEY,loginUser.getToken());
+
+
         String jwtToken = Jwts.builder().
                 setClaims(claims)
-                .signWith(SignatureAlgorithm.HS256, getKeyInstance())
+                .signWith(SignatureAlgorithm.HS256, jwtSecret)
                 .compact();
+/*
+        String jwtToken = Jwts.builder()
+                .signWith(SignatureAlgorithm.HS512, jwtSecret)
+                .setClaims(claims)
+                .setIssuer(ISS)
+                .setSubject(loginUser.getUsername())
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expireSeconds * 1000))
+                .compact();*/
 
+
+        log.info("jwtToken:"+jwtToken);
         return jwtToken;
 
     }
 
-    //获取KEY  ??
+/*    //获取KEY  ??
     private Key getKeyInstance(){
         if (KEY == null){
             synchronized (TokenServiceJWTImpl.class){
                 //双重锁
                 if (KEY == null){
                     byte[] apiKeySecretsBytes = DatatypeConverter.parseBase64Binary(jwtSecret);
+                    log.info("apiKeySecretsBytes.toString():"+apiKeySecretsBytes.toString());
                     KEY = new SecretKeySpec(apiKeySecretsBytes, SignatureAlgorithm.HS256.getJcaName());
                 }
             }
         }
         return KEY;
-    }
+    }*/
 
     private String getUUIDFromJWT(String jwtToken){
         if ("null".equals(jwtToken) || StringUtils.isBlank(jwtToken)){
             return null;
         }
         try {
-            Map<String, Object> claims = Jwts.parser().setSigningKey(getKeyInstance()).parseClaimsJws(jwtToken).getBody();
+            Map<String, Object> claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(jwtToken).getBody();
             return MapUtils.getString(claims, Constant.LOGIN_USER_KEY);
         }
         catch (ExpiredJwtException e) {

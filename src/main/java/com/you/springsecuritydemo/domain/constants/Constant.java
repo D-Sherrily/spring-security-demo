@@ -9,7 +9,7 @@ package com.you.springsecuritydemo.domain.constants;
 
 public class Constant {
 
-    private static final Long MINUTES_10 = 10 * 60 * 1000L;
+    public static final Long MINUTES_10 = 10 * 60 * 1000L;
 
     public static final Integer SUCCESS_CODE = 200;
     public static final Integer FAIL_CODE = 300;
@@ -23,6 +23,8 @@ public class Constant {
     //public static final String JWT_TOKEN_SECRET = "dd";
 
     public static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
+
+    public static final String TOKEN_KEY = "token";
 
 
 }

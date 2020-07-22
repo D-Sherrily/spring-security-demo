@@ -38,8 +38,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
      * @Param [registry]
      * @return void
      **/
-/*    @Override
+/*
+    @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new AccessInterceptor()).addPathPatterns("/**");
-    }*/
+    }
+*/
+
+
 }

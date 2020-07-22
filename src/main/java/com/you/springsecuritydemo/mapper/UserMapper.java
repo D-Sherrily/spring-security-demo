@@ -20,4 +20,6 @@ public interface UserMapper {
 
     /**根据用户名查找用户信息**/
     User selectByUsername(String username);
+
+    int updatePasswordByUsername(User user);
 }

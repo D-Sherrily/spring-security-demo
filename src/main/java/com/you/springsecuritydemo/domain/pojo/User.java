@@ -1,5 +1,7 @@
 package com.you.springsecuritydemo.domain.pojo;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,13 +37,20 @@ public class User  implements Serializable {
 
     private String email;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private Boolean sex;
 
-    private Boolean status;
+    private Integer status;
 
     private Date createtime;
 
     private Date updatetime;
+
+    public interface Status {
+        int DISABLED = 0;
+        int VALID = 1;
+        int LOCKED = 2;
+    }
 }

@@ -1,18 +1,7 @@
 package com.you.springsecuritydemo.service.impl;
 
-import com.you.springsecuritydemo.domain.entity.LoginUser;
-import com.you.springsecuritydemo.domain.pojo.Permission;
-import com.you.springsecuritydemo.domain.pojo.User;
-import com.you.springsecuritydemo.mapper.PermissionMapper;
-import com.you.springsecuritydemo.mapper.UserMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @ClassName: LoginUserService
@@ -23,7 +12,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 public class LoginUserServiceImpl {
-    @Resource
+  /*  @Resource
     private UserMapper userMapper;
 
     @Resource
@@ -37,16 +26,23 @@ public class LoginUserServiceImpl {
         if (dbUser == null){
             //todo   抛一个用户不存在的异常
             log.info("用户不存在的异常");
-        }else {
-            BeanUtils.copyProperties(dbUser,loginUserDto);
-            log.info("loginUserDto:" + loginUserDto);
-            List<Permission> dbPermissionList = permissionMapper.selectPermissionByUserId(dbUser.getId());
-            log.info("dbPermissionList:" + dbPermissionList);
-            dbPermissionList.forEach(c -> permissionList.add(c.getPermission()));
-            List<String> permissionListFinal = permissionList.stream().distinct().collect(Collectors.toList());
-            String[] permissionArr = new String[permissionListFinal.size()];
-            loginUserDto.setPermissionsArr(permissionListFinal.toArray(permissionArr));
+        }else if (dbUser.getStatus() == User.Status.LOCKED){
+            //todo   抛一个用户锁定的异常
+            log.info("用户锁定");
+        }else if (dbUser.getStatus() == User.Status.DISABLED){
+            //todo   抛一个用户已作废的异常
+            log.info("用户已作废");
         }
+
+
+        BeanUtils.copyProperties(dbUser,loginUserDto);
+        log.info("loginUserDto:" + loginUserDto);
+        List<Permission> dbPermissionList = permissionMapper.selectPermissionByUserId(dbUser.getId());
+        log.info("dbPermissionList:" + dbPermissionList);
+        dbPermissionList.forEach(c -> permissionList.add(c.getPermission()));
+        List<String> permissionListFinal = permissionList.stream().distinct().collect(Collectors.toList());
+        String[] permissionArr = new String[permissionListFinal.size()];
+        loginUserDto.setPermissionsArr(permissionListFinal.toArray(permissionArr));
         return loginUserDto;
-    }
+    }*/
 }
