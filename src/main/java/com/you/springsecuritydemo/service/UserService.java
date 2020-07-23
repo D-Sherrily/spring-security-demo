@@ -2,6 +2,8 @@ package com.you.springsecuritydemo.service;
 
 import com.you.springsecuritydemo.domain.pojo.User;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
  * @ClassName: UserService
  * @Description: user service

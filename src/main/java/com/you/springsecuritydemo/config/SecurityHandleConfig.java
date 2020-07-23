@@ -7,12 +7,14 @@ import com.you.springsecuritydemo.service.TokenService;
 import com.you.springsecuritydemo.utils.JwtTokenUtil;
 import com.you.springsecuritydemo.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.security.SecurityUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -47,6 +49,7 @@ public class SecurityHandleConfig {
                 LoginUser loginUser = (LoginUser)authentication.getPrincipal();
                 log.info("loginUser:"+loginUser);
                 TokenDto tokenDto = tokenService.saveToken(loginUser);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
                 ResponseUtil.responseJson(httpServletResponse, HttpStatus.OK.value(),tokenDto);
             }
         };

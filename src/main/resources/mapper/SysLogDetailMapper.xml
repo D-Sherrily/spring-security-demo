@@ -31,17 +31,22 @@
     delete from sys_log_detail
     where id = #{id,jdbcType=INTEGER}
   </delete>
+
+
   <insert id="insert" parameterType="com.you.springsecuritydemo.domain.pojo.SysLogDetail">
     <!--@mbg.generated-->
-    insert into sys_log_detail (id, log_id, `table_name`, 
+    insert into sys_log_detail (log_id, `table_name`,
       operation_action, `column_name`, old_column_content, 
-      new_column_content, createtime, is_delete
-      )
-    values (#{id,jdbcType=INTEGER}, #{logId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR}, 
+      new_column_content)
+    values ( #{logId,jdbcType=INTEGER}, #{tableName,jdbcType=VARCHAR},
       #{operationAction,jdbcType=VARCHAR}, #{columnName,jdbcType=VARCHAR}, #{oldColumnContent,jdbcType=VARCHAR}, 
-      #{newColumnContent,jdbcType=VARCHAR}, #{createtime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER}
+      #{newColumnContent,jdbcType=VARCHAR}
       )
+
   </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.you.springsecuritydemo.domain.pojo.SysLogDetail">
     <!--@mbg.generated-->
     insert into sys_log_detail

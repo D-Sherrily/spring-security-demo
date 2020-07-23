@@ -188,6 +188,8 @@
         updateTime = #{updatetime,jdbcType=TIMESTAMP}
         where id = #{id,jdbcType=INTEGER}
     </update>
+
+
     <select id="selectByUsername" resultMap="BaseResultMap">
         select  id ,username, `password`,status from sys_user where username = #{username,jdbcType=VARCHAR}
     </select>

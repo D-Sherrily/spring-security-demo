@@ -26,13 +26,17 @@
     delete from sys_log
     where id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.you.springsecuritydemo.domain.pojo.SysLog">
+
+
+
+  <insert id="insert" parameterType="com.you.springsecuritydemo.domain.pojo.SysLog" useGeneratedKeys="true" keyProperty="id">
     <!--@mbg.generated-->
-    insert into sys_log (id, user_id, `operation`, 
-      cratetime, is_delete)
-    values (#{id,jdbcType=INTEGER}, #{userId,jdbcType=INTEGER}, #{operation,jdbcType=VARCHAR}, 
-      #{cratetime,jdbcType=TIMESTAMP}, #{isDelete,jdbcType=INTEGER})
+    insert into sys_log (user_id, `operation`)
+    values (#{userId,jdbcType=INTEGER}, #{operation,jdbcType=VARCHAR})
   </insert>
+
+
+
   <insert id="insertSelective" parameterType="com.you.springsecuritydemo.domain.pojo.SysLog">
     <!--@mbg.generated-->
     insert into sys_log

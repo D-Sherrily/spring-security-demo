@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 /**
@@ -48,7 +49,7 @@ public class UserController {
     @PostMapping("modifyPassword")
     @ApiOperation(value = "修改密码")
     @PreAuthorize("hasAnyAuthority('sys:user:modify')")
-    public String modifyUserPassword(String username,String password){
+    public String modifyUserPassword(String username, String password){
         User user = new User();
         user.setUsername(username);
         user.setPassword(BCrypt.hashpw(password,BCrypt.gensalt()));
