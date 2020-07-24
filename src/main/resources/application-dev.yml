@@ -1,3 +1,5 @@
+server:
+  port: 9999
 spring:
   datasource:
     druid:
@@ -19,6 +21,12 @@ token:
   expire:
     seconds:  7200
     jwtSecret: (XIAO:)_$^11244^%$_(WEI:)_@@++--(LAO:)_++++_.sds_(SHI:)
-server:
-  port: 9999
 
+
+cos:
+  secretId: AKIDB9tPdcznzwNhldlafT29IDsIn32qgu5y
+  secretKey: lGn490acaNL5ZmmVO0NTIq88MPBgtp10
+  bucketName: d-1259511811
+  pathPrefix: https://d-1259511811.cos.ap-guangzhou.myqcloud.com
+  cosRegion: ap-guangzhou
+  fileFolder: img/

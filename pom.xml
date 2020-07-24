@@ -124,6 +124,14 @@
         </dependency>
         <!-- aop依赖  end-->
 
+        <!-- cos对象存储  start-->
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.24</version>
+        </dependency>
+        <!-- cos对象存储  end-->
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>

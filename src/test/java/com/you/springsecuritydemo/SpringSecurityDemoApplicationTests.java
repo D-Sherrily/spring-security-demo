@@ -3,6 +3,7 @@ package com.you.springsecuritydemo;
 import com.you.springsecuritydemo.domain.pojo.SysLog;
 import com.you.springsecuritydemo.domain.pojo.SysLogDetail;
 import com.you.springsecuritydemo.service.SysLogService;
+import com.you.springsecuritydemo.utils.CosUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -16,6 +17,9 @@ class SpringSecurityDemoApplicationTests {
 
     @Resource
     private SysLogService sysLogService;
+
+    @Resource
+    private CosUtil uploadUtil;
     @Test
     void contextLoads() {
         String hashpw = BCrypt.hashpw("123456", BCrypt.gensalt());
@@ -40,5 +44,33 @@ class SpringSecurityDemoApplicationTests {
         sysLogDetail.setNewColumnContent("qwe");
         sysLogDetail.setOldColumnContent("123");
         sysLogService.insertLog(sysLog,sysLogDetail);
+    }
+
+
+    @Test
+    void testCosUpload() {
+        String filePath = "C:\\Users\\dell\\IdeaProjects\\spring-security-demo\\src\\main\\resources\\static\\img\\logo\\logo.png";
+        String filename = "logo1.png";
+        uploadUtil.cosUpload(filePath,filename);
+    }
+
+    @Test
+    void testCosFileList() {
+
+        uploadUtil.cosGetFileList();
+    }
+
+
+    @Test
+    void testCosDownLoad() {
+        String filename = "logo1.png";
+        String targetFile = "C:\\Users\\dell\\IdeaProjects\\spring-security-demo\\src\\main\\resources\\11\\logo.png";
+        uploadUtil.cosDownLoad(filename);
+    }
+
+    @Test
+    void testCosDel() {
+        String filename = "logo1.png";
+        uploadUtil.cosDel(filename);
     }
 }
