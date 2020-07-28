@@ -22,4 +22,7 @@ public interface PermissionMapper {
      * @Description  通过用户ID 查找用户对应的权限
      **/
     List<Permission> selectPermissionByUserId(Integer userId);
+
+
+    List<Permission> selectAll();
 }

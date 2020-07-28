@@ -2,6 +2,7 @@ package com.you.springsecuritydemo.enums;
 
 import com.you.springsecuritydemo.basic.BaseExceptionInfoInterface;
 import com.you.springsecuritydemo.domain.constants.Constant;
+import lombok.Data;
 
 /**
  * @ClassName: RespInfo
@@ -20,7 +21,7 @@ public enum RespInfo implements BaseExceptionInfoInterface {
 
     //token缺失
     ILLEGAL_TOKEN(Constant.ILLEGAL_TOKEN_CODE,"无效的token"),
-    SERvER_BUSY(Constant.FAIL_CODE,"服务器繁忙");
+    SERVER_BUSY(Constant.FAIL_CODE,"服务器繁忙");
 
     /** 错误码 */
     private Integer respCode;

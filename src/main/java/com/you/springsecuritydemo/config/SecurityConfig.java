@@ -65,6 +65,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers("/", "/*.html", "/favicon.ico", "/css/**", "/js/**", "/fonts/**", "/layui/**", "/img/**",
                 "/pages/**", "/druid/**", "/statics/**").permitAll()
+                .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();
 
         http.formLogin().loginProcessingUrl("/login")
@@ -72,6 +73,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureHandler(authenticationFailureHandler)
                 .and()
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+
         http.logout().logoutUrl("/logout")
                 .logoutSuccessHandler(logoutSuccessHandler);
 

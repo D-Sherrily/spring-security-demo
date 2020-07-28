@@ -2,7 +2,7 @@ package com.you.springsecuritydemo.service.impl;
 
 import com.you.springsecuritydemo.domain.pojo.SysLog;
 import com.you.springsecuritydemo.domain.pojo.SysLogDetail;
-import com.you.springsecuritydemo.execption.MyException;
+import com.you.springsecuritydemo.exception.MyException;
 import com.you.springsecuritydemo.mapper.SysLogDetailMapper;
 import com.you.springsecuritydemo.mapper.SysLogMapper;
 import com.you.springsecuritydemo.service.SysLogService;

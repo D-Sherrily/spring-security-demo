@@ -8,12 +8,17 @@ import com.qcloud.cos.exception.CosClientException;
 import com.qcloud.cos.exception.CosServiceException;
 import com.qcloud.cos.model.*;
 import com.qcloud.cos.region.Region;
+import com.qcloud.cos.transfer.PersistableUpload;
+import com.qcloud.cos.transfer.Upload;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
+import com.qcloud.cos.transfer.TransferManager;
 import java.io.File;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * @ClassName: COS 对象存储
@@ -114,19 +119,38 @@ public class CosUtil {
     /**
      * @Description 上传文件   key 是唯一值 可以讲文件夹名和文件名组合起来作为 key
      **/
-    public void cosUpload(String filePath,String fileName){
+    public void cosUpload(File file){
+        //获取 cosClient 对象
         COSClient cosClient = cosInit();
-        // 指定要上传的文件
-        File localFile = new File(filePath);
+
         // 指定要上传到的存储桶
         //String bucketName = "examplebucket-1250000000";
         // 指定要上传到 COS 上对象键
         // 以/为分隔  文件夹
-        String key = fileFolder+fileName;
-        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, localFile);
-        PutObjectResult putObjectResult = cosClient.putObject(putObjectRequest);
+        String key = fileFolder+file.getName();
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file);
+        //最大8M 单位bit/s
+        putObjectRequest.setTrafficLimit(64*1024*1024);
+        //设置存储类型
+        putObjectRequest.setStorageClass(StorageClass.Standard);
+        PutObjectResult putObjectResult;
 
-        cosClose(cosClient);
+        try {
+
+
+            putObjectResult = cosClient.putObject(putObjectRequest);
+            //requestID
+            String requestId = putObjectResult.getRequestId();
+            //访问的url
+            String path = pathPrefix+key;
+
+        }catch (CosClientException e){
+            log.error("cos 对象存储异常",e.getMessage());
+        } finally {
+            cosClient.shutdown();
+        }
+
+
     }
 
 
@@ -175,6 +199,58 @@ public class CosUtil {
      **/
     public void cosClose(COSClient cosClient){
         cosClient.shutdown();
+    }
+
+
+
+    public String cosHigherUpload(File file){
+        //初始化用户身份信息
+        BasicCOSCredentials cosCredentials = new BasicCOSCredentials(secretId, secretKey);
+        //设置桶区域
+        ClientConfig clientConfig = new ClientConfig(new Region(cosRegion));
+        //生成cos客户端
+        COSClient cosClient = new COSClient(cosCredentials, clientConfig);
+        ExecutorService threadPool = Executors.newFixedThreadPool(32);
+        TransferManager transferManager = new TransferManager(cosClient, threadPool);
+        //设置key
+        String key = System.currentTimeMillis()+file.getName();
+        // 对大于分块大小的文件，使用断点续传
+        // 步骤一：获取 PersistableUpload
+
+        PutObjectRequest putObjectRequest = new PutObjectRequest(bucketName, key, file);
+        // 本地文件上传
+        PersistableUpload persistableUpload = null;
+        // 设置 SDK 内部简单上传或每个分块上传速度为8MB/s，单位：bit/s
+        // 注意：大于分块阈值的 File 类型数据上传，会并发多分块上传，需要调整线程池大小，以控制上传速度
+        putObjectRequest.setTrafficLimit(64*1024*1024);
+
+        Upload upload = transferManager.upload(putObjectRequest);
+        // 等待"分块上传初始化"完成，并获取到 persistableUpload （包含 uploadId 等）
+
+
+        try {
+            while(persistableUpload == null) {
+                persistableUpload = upload.getResumeableMultipartUploadId();
+                Thread.sleep(100);
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        // 保存 persistableUpload
+
+        // 步骤二：当由于网络等问题，大文件的上传被中断，则根据 PersistableUpload 恢复该文件的上传，只上传未上传的分块
+        Upload newUpload = transferManager.resumeUpload(persistableUpload);
+        // 等待传输结束（如果想同步的等待上传结束，则调用 waitForCompletion）
+        UploadResult uploadResult = null;
+        try {
+            uploadResult = newUpload.waitForUploadResult();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        // 服务端计算得到的对象 CRC64
+        String crc64Ecma = uploadResult.getCrc64Ecma();
+       return null;
     }
 
 }

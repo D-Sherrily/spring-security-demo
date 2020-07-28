@@ -1,6 +1,9 @@
 package com.you.springsecuritydemo.controller;
 
+import com.you.springsecuritydemo.annotation.IgnorReponseAdvice;
 import com.you.springsecuritydemo.domain.pojo.User;
+import com.you.springsecuritydemo.enums.RespInfo;
+import com.you.springsecuritydemo.exception.IllegalTokenException;
 import com.you.springsecuritydemo.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -33,8 +36,9 @@ public class UserController {
     @ApiOperation(value = "保存用户")
     @PreAuthorize("hasAnyAuthority('sys:user:manager','sys:user:query','sys:user:password')")
     public String saveUser(){
-
-        return "saveUser";
+        //throw new RuntimeException("我错了");
+        throw new IllegalTokenException(RespInfo.ILLEGAL_TOKEN.getRespMsg());
+        //return "saveUser";
     }
 
 
@@ -56,5 +60,8 @@ public class UserController {
         userService.modifyPasswordByUsername(user);
         return "modifyPassword";
     }
+
+
+
 
 }

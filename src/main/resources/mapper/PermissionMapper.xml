@@ -139,4 +139,12 @@
         INNER JOIN sys_user ON sys_role_user.userId = sys_user.id
         WHERE sys_user.id = #{userId,jdbcType=INTEGER}
     </select>
+
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT
+        *
+        FROM
+        sys_permission
+    </select>
 </mapper>

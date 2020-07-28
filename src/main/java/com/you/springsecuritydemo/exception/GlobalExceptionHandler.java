@@ -1,6 +1,7 @@
-package com.you.springsecuritydemo.execption;
+package com.you.springsecuritydemo.exception;
 
 import com.you.springsecuritydemo.domain.entity.Resp;
+import com.you.springsecuritydemo.enums.RespInfo;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -12,13 +13,15 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
  **/
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    //todo
 
-    @ExceptionHandler(value = Exception.class)
-    public Resp globalException(){
+
+    @ExceptionHandler(value = IllegalTokenException.class)
+    public Resp exceptionHandler(Exception e){
         Resp<Object> exceptionResp = new Resp<>();
 
-        //exceptionResp.setMsg();
+        exceptionResp.setMsg(e.getMessage());
+        exceptionResp.setData(null);
+        exceptionResp.setStatus(RespInfo.ILLEGAL_TOKEN.getRespCode());
         return exceptionResp;
     }
 }

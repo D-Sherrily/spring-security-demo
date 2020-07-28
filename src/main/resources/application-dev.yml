@@ -30,3 +30,11 @@ cos:
   pathPrefix: https://d-1259511811.cos.ap-guangzhou.myqcloud.com
   cosRegion: ap-guangzhou
   fileFolder: img/
+
+
+
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+  params: count=countSql

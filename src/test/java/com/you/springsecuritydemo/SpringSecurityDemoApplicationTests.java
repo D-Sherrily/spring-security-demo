@@ -1,8 +1,12 @@
 package com.you.springsecuritydemo;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.you.springsecuritydemo.domain.pojo.Permission;
 import com.you.springsecuritydemo.domain.pojo.SysLog;
 import com.you.springsecuritydemo.domain.pojo.SysLogDetail;
 import com.you.springsecuritydemo.service.SysLogService;
+import com.you.springsecuritydemo.service.TestService;
 import com.you.springsecuritydemo.utils.CosUtil;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -11,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @SpringBootTest
 class SpringSecurityDemoApplicationTests {
@@ -51,7 +56,7 @@ class SpringSecurityDemoApplicationTests {
     void testCosUpload() {
         String filePath = "C:\\Users\\dell\\IdeaProjects\\spring-security-demo\\src\\main\\resources\\static\\img\\logo\\logo.png";
         String filename = "logo1.png";
-        uploadUtil.cosUpload(filePath,filename);
+       // uploadUtil.cosUpload(filePath,filename);
     }
 
     @Test
@@ -73,4 +78,18 @@ class SpringSecurityDemoApplicationTests {
         String filename = "logo1.png";
         uploadUtil.cosDel(filename);
     }
+
+    @Resource
+    private TestService testService;
+    @Test
+    void testImpl() {
+        //PageHelper.startPage(1,11);
+        List<Permission> test = testService.test();
+        test.forEach(System.out::println);
+
+    }
+
+
+
+
 }
