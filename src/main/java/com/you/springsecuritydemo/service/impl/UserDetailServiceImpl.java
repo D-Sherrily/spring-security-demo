@@ -44,9 +44,15 @@ public class UserDetailServiceImpl implements UserDetailsService {
                 .authorities(loginUserInfo.getPermissionsArr()).build();*/
 
 
-        User dbUser = userMapper.selectByUsername(username);
+
+        //User dbUser = userMapper.selectByUsernameAndMobile(str);
+        //User dbUser = userMapper.selectByUsername(username);
+        User dbUser = new User();
+        dbUser.setUsername("zs");
+        dbUser.setPassword("$2a$10$TUccIf/C3EvhZ6CEqXIvYezZjDuORxFAX9iMLJr6XeLXGx9wuUKI.");
+        dbUser.setPhone("123");
         log.info("dbUser:"+dbUser);
-        if (dbUser == null){
+/*        if (dbUser == null){
             //todo   抛一个用户不存在的异常
             log.info("用户不存在的异常");
         }else if (dbUser.getStatus() == com.you.springsecuritydemo.domain.pojo.User.Status.LOCKED){
@@ -55,7 +61,7 @@ public class UserDetailServiceImpl implements UserDetailsService {
         }else if (dbUser.getStatus() == User.Status.DISABLED){
             //todo   抛一个用户已作废的异常
             log.info("用户已作废");
-        }
+        }*/
 
 
         LoginUser loginUserDto = new LoginUser();

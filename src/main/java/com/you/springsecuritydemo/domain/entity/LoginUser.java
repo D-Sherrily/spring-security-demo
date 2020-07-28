@@ -39,6 +39,8 @@ public class LoginUser extends User implements UserDetails{
 
     private String password;
 
+    private String phone;
+
     private List<Permission> permissions;
 
     private String token;
@@ -68,7 +70,8 @@ public class LoginUser extends User implements UserDetails{
     @Override
     @JsonIgnore
     public boolean isAccountNonLocked() {
-        return getStatus() != Status.LOCKED;
+        //return getStatus() != Status.LOCKED;
+        return true;
     }
 
     @Override

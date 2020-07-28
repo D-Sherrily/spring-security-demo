@@ -3,6 +3,7 @@ package com.you.springsecuritydemo.config;
 import com.you.springsecuritydemo.filter.TokenFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -47,9 +48,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Resource
     private TokenFilter tokenFilter;
 
+   /* @Resource
+    private SmsAuthenticationFilter smsAuthenticationFilter;*/
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 
     @Override
@@ -68,7 +78,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/test/**").permitAll()
                 .anyRequest().authenticated();
 
-        http.formLogin().loginProcessingUrl("/login")
+        http.formLogin().loginProcessingUrl("/login/**")
                 .successHandler(authenticationSuccessHandler)
                 .failureHandler(authenticationFailureHandler)
                 .and()
@@ -77,8 +87,26 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.logout().logoutUrl("/logout")
                 .logoutSuccessHandler(logoutSuccessHandler);
 
+
+
+        //创建并配置好自定义SmsAuthenticationfilter，
+
+      /*  //smsAuthenticationFilter.setAuthenticationManager(http.getSharedObject(AuthenticationManager.class));
+        smsAuthenticationFilter.setAuthenticationManager(authenticationManagerBean());
+        smsAuthenticationFilter.setAuthenticationSuccessHandler(authenticationSuccessHandler);
+        smsAuthenticationFilter.setAuthenticationFailureHandler(authenticationFailureHandler);
+        //创建并配置好自定义SmsAuthenticationProvide
+        SmsAuthenticationProvider smsAuthenticationProvide=new SmsAuthenticationProvider();
+        smsAuthenticationProvide.setUserDetailsService(userDetailsService);
+        http.authenticationProvider(smsAuthenticationProvide);
+        //将过滤器添加到过滤链路中
+        http.addFilterAfter(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);*/
+
         //todo  加入tokenfilter
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(smsAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+
 
 
     }
